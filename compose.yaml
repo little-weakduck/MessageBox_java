@@ -1,0 +1,10 @@
+services:
+  Message_Box:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=messageBox'
+      - 'MYSQL_PASSWORD=123456'
+      - 'MYSQL_ROOT_PASSWORD=654321'
+      - 'MYSQL_USER=little_weakduck'
+    ports:
+      - '9999:3306'
