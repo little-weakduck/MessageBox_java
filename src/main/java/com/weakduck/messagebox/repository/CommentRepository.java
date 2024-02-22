@@ -19,7 +19,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             throw new IllegalArgumentException("Comment not found");
         }
         return  comment;
-    };
+    }
 
     default void deleteById(@NotNull Long id){
         Comment comment = findByIdAndDeletedIsFalse(id);
