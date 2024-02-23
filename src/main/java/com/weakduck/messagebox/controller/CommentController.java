@@ -1,10 +1,12 @@
 package com.weakduck.messagebox.controller;
 
 import com.weakduck.messagebox.dto.CreateCommentDTO;
+import com.weakduck.messagebox.dto.DeleteCommentDTO;
 import com.weakduck.messagebox.model.Comment;
 import com.weakduck.messagebox.response.ApiResponse;
 import com.weakduck.messagebox.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +53,8 @@ public class CommentController {
 //    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteComment(@PathVariable Long id, @RequestBody DeleteCommentDTO body) {
+
         if (commentService.findCommentById(id).isPresent()) {
             commentService.deleteComment(id);
             return ResponseEntity.ok().build();
