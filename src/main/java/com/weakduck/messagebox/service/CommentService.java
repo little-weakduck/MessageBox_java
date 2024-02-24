@@ -30,7 +30,6 @@ public class CommentService {
     public MyPage<Comment> findAllComments(int page, int size) {
         Page<Comment> resultPage = commentRepository.findAll(PageRequest.of(page - 1, size));
         List<Comment> comments = resultPage.getContent();
-        comments.forEach(comment -> Hibernate.initialize(comment.getChildren());
 
         long total = resultPage.getTotalElements();
 
