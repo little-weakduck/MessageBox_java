@@ -6,13 +6,11 @@ import com.weakduck.messagebox.model.Comment;
 import com.weakduck.messagebox.response.ApiResponse;
 import com.weakduck.messagebox.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.weakduck.messagebox.dto.MyPage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.security.auth.login.FailedLoginException;
 
 @RestController
 @RequestMapping("/api/comments")
@@ -26,9 +24,11 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<Comment>>> getAllComments(Pageable pageable) {
-        Page<Comment> page = commentService.findAllComments(pageable);
-        return ResponseEntity.ok(ApiResponse.success(page));
+    public ResponseEntity<ApiResponse<MyPage<Comment>>> getAllComments(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        MyPage<Comment> pageResult = commentService.findAllComments(page,size);
+        return ResponseEntity.ok(ApiResponse.success(pageResult));
     }
 
 
@@ -38,25 +38,11 @@ public class CommentController {
         return ResponseEntity.ok(ApiResponse.success(""));
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Comment> updateComment(@PathVariable Long id, @RequestBody Comment comment) {
-//        return commentService.findCommentById(id)
-//                .map(existingComment -> {
-//                    // Update the properties of the existing comment with that of the new one
-//                    // For simplicity, here we just update the content
-//                    existingComment.setContent(comment.getContent());
-//                    existingComment.setUpdatedAt(System.currentTimeMillis());
-//                    Comment updatedComment = commentService.saveComment(existingComment);
-//                    return ResponseEntity.ok(updatedComment);
-//                })
-//                .orElseGet(() -> ResponseEntity.notFound().build());
-//    }
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id, @RequestBody DeleteCommentDTO body) {
+    public ResponseEntity<Void> deleteComment(@PathVariable Long id, @RequestBody DeleteCommentDTO body) throws FailedLoginException {
 
         if (commentService.findCommentById(id).isPresent()) {
-            commentService.deleteComment(id);
+            commentService.deleteComment(id, body.getAdminPassword());
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.security.auth.login.FailedLoginException;
+
 @RestController
 @RequestMapping("/api/admin")
 public class AdminPasswordController {
@@ -22,7 +24,7 @@ public class AdminPasswordController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> changeAdminPassword(@RequestBody ChangePasswordDTO body ) {
+    public ResponseEntity<ApiResponse<String>> changeAdminPassword(@RequestBody ChangePasswordDTO body ) throws FailedLoginException {
         adminPasswordService.changeAdminPassword(body);
         return ResponseEntity.ok(ApiResponse.success(""));
     }

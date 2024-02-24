@@ -2,15 +2,15 @@ package com.weakduck.messagebox.dto;
 
 import java.util.List;
 
-public class Page<T> {
+public class MyPage<T> {
     private int page;
     private int pageSize;
     private long total;
     private List<T> data;
 
-    public Page(int page, int pageSize, long total, List<T> data) {
+    public MyPage(int page, int size, long total, List<T> data) {
         this.page = page;
-        this.pageSize = pageSize;
+        this.pageSize = size;
         this.total = total;
         this.data = data;
     }

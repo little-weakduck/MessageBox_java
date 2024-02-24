@@ -4,6 +4,8 @@ import com.weakduck.messagebox.dto.ChangePasswordDTO;
 import com.weakduck.messagebox.repository.AdminPasswordRepository;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.FailedLoginException;
+
 @Service
 public class AdminPasswordService {
     private final AdminPasswordRepository adminPasswordRepository;
@@ -12,7 +14,7 @@ public class AdminPasswordService {
         this.adminPasswordRepository = adminPasswordRepository;
     }
 
-    public void changeAdminPassword(ChangePasswordDTO changePasswordDTO) {
+    public void changeAdminPassword(ChangePasswordDTO changePasswordDTO) throws FailedLoginException {
         if (adminPasswordRepository.isCorrectAdminPassword(changePasswordDTO.getOldPassword())){
             if(!changePasswordDTO.isCheck()) {
                 throw new IllegalArgumentException("password check error");
@@ -23,7 +25,7 @@ public class AdminPasswordService {
         }
     }
 
-    public boolean isCorrectAdminPassword(String adminPassword) {
+    public boolean isCorrectAdminPassword(String adminPassword) throws FailedLoginException {
         return adminPasswordRepository.isCorrectAdminPassword(adminPassword);
     }
 }

@@ -1,7 +1,9 @@
 package com.weakduck.messagebox.model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+@Entity
 public class AdminPassword {
 
     @Id
