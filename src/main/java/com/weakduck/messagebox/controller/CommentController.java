@@ -1,5 +1,6 @@
 package com.weakduck.messagebox.controller;
 
+import com.weakduck.messagebox.dto.CommentDTO;
 import com.weakduck.messagebox.dto.CreateCommentDTO;
 import com.weakduck.messagebox.dto.DeleteCommentDTO;
 import com.weakduck.messagebox.model.Comment;
@@ -24,10 +25,10 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<MyPage<Comment>>> getAllComments(
+    public ResponseEntity<ApiResponse<MyPage<CommentDTO>>> getAllComments(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
-        MyPage<Comment> pageResult = commentService.findAllComments(page,size);
+        MyPage<CommentDTO> pageResult = commentService.findAllComments(page,size);
         return ResponseEntity.ok(ApiResponse.success(pageResult));
     }
 

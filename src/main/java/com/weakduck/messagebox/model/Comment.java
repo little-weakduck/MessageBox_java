@@ -16,7 +16,7 @@ public class Comment {
     private String content;
     @JsonIgnore
     private Long createdAt;
-    @JsonIgnore
+
     private Long updatedAt;
     @JsonIgnore
     private Boolean deleted;
