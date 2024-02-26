@@ -5,7 +5,6 @@ import com.weakduck.messagebox.dto.CreateCommentDTO;
 import com.weakduck.messagebox.dto.MyPage;
 import com.weakduck.messagebox.model.Comment;
 import com.weakduck.messagebox.repository.CommentRepository;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,11 +19,11 @@ import java.util.stream.Collectors;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private  final AdminPasswordService adminPasswordService;
+    private final AdminPasswordService adminPasswordService;
 
 
     @Autowired
-    public CommentService(CommentRepository commentRepository,AdminPasswordService adminPasswordService ) {
+    public CommentService(CommentRepository commentRepository, AdminPasswordService adminPasswordService) {
         this.commentRepository = commentRepository;
         this.adminPasswordService = adminPasswordService;
     }
@@ -46,9 +45,11 @@ public class CommentService {
 
     public void saveComment(CreateCommentDTO createCommentDTO) {
         String content = createCommentDTO.getContent();
+        String author = createCommentDTO.getAuthor();
+        String title = createCommentDTO.getTitle();
         Long parentId = createCommentDTO.getParentId();
         Comment parent = parentId != null ? commentRepository.findByIdAndDeletedIsFalse(parentId) : null;
-        Comment newComment = new Comment(content, parent);
+        Comment newComment = new Comment(content, title, author, parent);
         commentRepository.save(newComment);
     }
 

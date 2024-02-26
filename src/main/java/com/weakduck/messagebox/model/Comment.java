@@ -14,6 +14,11 @@ public class Comment {
     private Long id;
 
     private String content;
+
+    private String title;
+
+    private String author;
+
     @JsonIgnore
     private Long createdAt;
 
@@ -33,8 +38,10 @@ public class Comment {
         this.deleted = false;
     }
 
-    public Comment(String content, Comment parent) {
+    public Comment(String content, String title, String author, Comment parent) {
         this.content = content;
+        this.title = title;
+        this.author = author;
         this.createdAt = Instant.now().toEpochMilli();
         this.updatedAt = Instant.now().toEpochMilli();
         this.deleted = false;
@@ -56,6 +63,22 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public Long getCreatedAt() {
