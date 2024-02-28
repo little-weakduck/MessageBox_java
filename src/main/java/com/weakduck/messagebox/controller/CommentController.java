@@ -3,7 +3,6 @@ package com.weakduck.messagebox.controller;
 import com.weakduck.messagebox.dto.CommentDTO;
 import com.weakduck.messagebox.dto.CreateCommentDTO;
 import com.weakduck.messagebox.dto.DeleteCommentDTO;
-import com.weakduck.messagebox.model.Comment;
 import com.weakduck.messagebox.response.ApiResponse;
 import com.weakduck.messagebox.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,7 @@ public class CommentController {
     public ResponseEntity<Void> deleteComment(@PathVariable Long id, @RequestBody DeleteCommentDTO body) throws FailedLoginException {
 
         if (commentService.findCommentById(id).isPresent()) {
-            commentService.deleteComment(id, body.getAdminPassword());
+            commentService.deleteComment(id, body.getPassword());
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();

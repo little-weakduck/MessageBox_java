@@ -34,7 +34,7 @@ public class CommentService {
 
         List<CommentDTO> commentDTOS = comments.stream().map(CommentDTO::new).collect(Collectors.toList());
 
-        long total = resultPage.getTotalElements();
+        long total = commentRepository.countByDeletedIsFalse();
 
         return new MyPage<>(page, size, total, commentDTOS);
     }
@@ -69,9 +69,9 @@ public class CommentService {
 
     }
 
-    public void deleteComment(Long id, String adminPassword) throws FailedLoginException {
+    public void deleteComment(Long id, String password) throws FailedLoginException {
 
-        adminPasswordService.isCorrectAdminPassword(adminPassword);
+        adminPasswordService.isCorrectAdminPassword(password);
 
         commentRepository.deleteById(id);
     }

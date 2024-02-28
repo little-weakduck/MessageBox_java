@@ -1,16 +1,16 @@
 package com.weakduck.messagebox.dto;
 
 public class DeleteCommentDTO {
-    private String adminPassword;
+    private String password;
 
     public DeleteCommentDTO() {
     }
 
-    public DeleteCommentDTO(String adminPassword) {
-        this.adminPassword = adminPassword;
+    public DeleteCommentDTO(String password) {
+        this.password = password;
     }
 
-    public String getAdminPassword() {
-        return adminPassword;
+    public String getPassword() {
+        return password;
     }
 }

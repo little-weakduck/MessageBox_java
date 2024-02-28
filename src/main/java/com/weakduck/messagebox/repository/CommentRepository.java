@@ -28,14 +28,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
         return  comment;
     }
 
-    default Page<Comment> findAllByDeletedIsFalse(Pageable pageable) {
-        Page<Comment> allComments = findAll(pageable);
-        List<Comment> filteredComments = allComments.stream()
-                .filter(comment -> !comment.getDeleted())
-                .collect(Collectors.toList());
-        return new PageImpl<>(filteredComments, pageable, filteredComments.size());
-    }
+    Page<Comment> findAllByDeletedIsFalse(Pageable pageable);
 
+    long countByDeletedIsFalse();
     default void deleteById(@NotNull Long id){
         Comment comment = findByIdAndDeletedIsFalse(id);
         comment.setDeleted(true);
