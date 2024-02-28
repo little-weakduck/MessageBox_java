@@ -2,8 +2,15 @@ package com.weakduck.messagebox.repository;
 
 import com.weakduck.messagebox.model.Comment;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
@@ -19,6 +26,14 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             throw new IllegalArgumentException("Comment not found");
         }
         return  comment;
+    }
+
+    default Page<Comment> findAllByDeletedIsFalse(Pageable pageable) {
+        Page<Comment> allComments = findAll(pageable);
+        List<Comment> filteredComments = allComments.stream()
+                .filter(comment -> !comment.getDeleted())
+                .collect(Collectors.toList());
+        return new PageImpl<>(filteredComments, pageable, filteredComments.size());
     }
 
     default void deleteById(@NotNull Long id){

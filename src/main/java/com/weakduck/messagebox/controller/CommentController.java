@@ -34,9 +34,8 @@ public class CommentController {
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse<String>> createComment(@RequestBody CreateCommentDTO createCommentDTO) {
-        commentService.saveComment(createCommentDTO);
-        return ResponseEntity.ok(ApiResponse.success(""));
+    public ResponseEntity<ApiResponse<CommentDTO>> createComment(@RequestBody CreateCommentDTO createCommentDTO) {
+        return ResponseEntity.ok(ApiResponse.success(commentService.saveComment(createCommentDTO)));
     }
 
     @DeleteMapping("/{id}")

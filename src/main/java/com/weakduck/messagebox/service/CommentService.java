@@ -29,7 +29,7 @@ public class CommentService {
     }
 
     public MyPage<CommentDTO> findAllComments(int page, int size) {
-        Page<Comment> resultPage = commentRepository.findAll(PageRequest.of(page - 1, size));
+        Page<Comment> resultPage = commentRepository.findAllByDeletedIsFalse(PageRequest.of(page - 1, size));
         List<Comment> comments = resultPage.getContent();
 
         List<CommentDTO> commentDTOS = comments.stream().map(CommentDTO::new).collect(Collectors.toList());
@@ -43,14 +43,30 @@ public class CommentService {
         return commentRepository.findById(id);
     }
 
-    public void saveComment(CreateCommentDTO createCommentDTO) {
+    public CommentDTO saveComment(CreateCommentDTO createCommentDTO) {
         String content = createCommentDTO.getContent();
+        if (content == null || content.isEmpty()) {
+            throw new IllegalArgumentException("Content is empty");
+        } else if (content.length() > 140) {
+            throw new IllegalArgumentException("Content is too long");
+        }
         String author = createCommentDTO.getAuthor();
+        if (author == null || author.isEmpty()) {
+            throw new IllegalArgumentException("Author is empty");
+        } else if (author.length() > 20) {
+            throw new IllegalArgumentException("Author is too long");
+        }
         String title = createCommentDTO.getTitle();
+        if (title == null || title.isEmpty()) {
+            throw new IllegalArgumentException("Title is empty");
+        } else if (title.length() > 20 ){
+            throw new IllegalArgumentException("Title is too long");
+        }
         Long parentId = createCommentDTO.getParentId();
         Comment parent = parentId != null ? commentRepository.findByIdAndDeletedIsFalse(parentId) : null;
         Comment newComment = new Comment(content, title, author, parent);
-        commentRepository.save(newComment);
+        return new CommentDTO(commentRepository.save(newComment));
+
     }
 
     public void deleteComment(Long id, String adminPassword) throws FailedLoginException {
