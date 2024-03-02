@@ -1,5 +1,18 @@
 version: '3'
 services:
+  traefik:
+    image: traefik:v2.5
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
   Message_Box:
     image: 'mysql:latest'
     environment:
@@ -20,5 +33,7 @@ services:
       - 'DATABASE_NAME=messageBox'
       - 'DATABASE_USER=little_weakduck'
       - 'DATABASE_PASSWORD=123456'
-    ports:
-      - '8899:8080'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.my_app.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.my_app.entrypoints=web"
